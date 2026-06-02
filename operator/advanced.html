@@ -1,0 +1,195 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Template · Bootstrap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Le styles -->
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 20px;
+      padding-bottom: 60px;
+    }
+
+    .navbar {
+      width: 500px;
+      margin: auto
+    }
+
+    /* Custom container */
+    .container {
+      margin: 0 auto;
+      max-width: 1000px;
+    }
+
+    .container>hr {
+      margin: 60px 0;
+    }
+
+    /* Main marketing message and sign up button */
+    .jumbotron {
+      margin: 80px 0;
+      text-align: center;
+    }
+
+    .jumbotron h1 {
+      font-size: 100px;
+      line-height: 1;
+    }
+
+    .jumbotron .lead {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .jumbotron .btn {
+      font-size: 21px;
+      padding: 14px 24px;
+    }
+
+    /* Customize the navbar links to be fill the entire space of the .navbar */
+    .navbar .navbar-inner {
+      padding: 0;
+    }
+
+    .navbar .nav {
+      margin: 0;
+      display: table;
+      width: 100%;
+    }
+
+    .navbar .nav li {
+      display: table-cell;
+      width: 1%;
+      float: none;
+    }
+
+    .navbar .nav li a {
+      font-weight: bold;
+      text-align: center;
+      border-left: 1px solid rgba(255, 255, 255, .75);
+      border-right: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    .navbar .nav li:first-child a {
+      border-left: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .navbar .nav li:last-child a {
+      border-right: 0;
+      border-radius: 0 3px 3px 0;
+    }
+  </style>
+  <script>
+    function pwrHigh() {
+      fetch('api/pwr?set=high')
+        .then(response => {
+          const button = document.getElementById('pwrHigh');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+            button.innerText = `This shouldn't happen, try again? (POWER HIGH)`;
+          }
+          button.innerText = 'Power pin set HIGH!';
+          return response.text();
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    function pwrLow() {
+      fetch('api/pwr?set=low')
+        .then(response => {
+          const button = document.getElementById('pwrLow');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+            button.innerText = `This shouldn't happen, try again? (POWER LOW)`;
+          }
+          button.innerText = 'Power pin set LOW!';
+          return response.text();
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    function rstHigh() {
+      fetch('api/rst?set=high')
+        .then(response => {
+          const button = document.getElementById('rstHigh');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+            button.innerText = `This shouldn't happen, try again? (RESET HIGH)`;
+          }
+          button.innerText = 'Reset pin set HIGH!';
+          return response.text();
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    function holdPWR() {
+      const holdTime = document.getElementById('holdPWRInput').value;
+      fetch('api/pwr?hold=' + holdTime)
+        .then(response => {
+          const button = document.getElementById('holdPWR');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+            button.innerText = `This shouldn't happen, try again? (HOLD POWER)`;
+          }
+          button.innerText = `Power pin held HIGH for ${holdTime} ms!`;
+          return response.text();
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1>ESPWR</h1>
+      <p class="lead">Control your ESP32 GPIO pins via HTTP requests.</p>
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <ul class="nav">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="#">ADVANCED CONTROL</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p>Use the buttons below to control the power and reset pins of your server. You can also use the following HTTP
+          requests to control the pins:</p>
+        <ul>
+          <li><code>api/pwr?set=high</code> or <code>api/rst?set=high</code> to set pin HIGH</li>
+          <li><code>api/pwr?set=low</code> or <code>api/rst?set=low</code> to set pin LOW</li>
+          <li><code>api/pwr?hold=ms</code> or <code>api/rst?hold=ms</code> with <code>hold=ms</code> to
+            set pin HIGH for ms milliseconds</li>
+        </ul>
+      </div>
+      <div style="margin: 10px;">
+        <button id="pwrHigh" class="btn btn-large btn-success" onclick="pwrHigh()">Set Power pin HIGH</button>
+        <button id="pwrLow" class="btn btn-large btn-danger" onclick="pwrLow()">Set Power pin LOW</button>
+      </div>
+      <div style="margin: 10px;">
+        <button id="rstHigh" class="btn btn-large btn-success" onclick="rstHigh()">Set Reset pin HIGH</button>
+        <button id="rstLow" class="btn btn-large btn-danger" onclick="rstLow()">Set Reset pin LOW</button>
+      </div>
+      <div style="margin: 10px;">
+        <button id="holdPWR" class="btn btn-large btn-info" onclick="holdPWR()">Hold Power pin</button>
+        <input type="number" id="holdPWRInput" placeholder="Hold time (ms)"
+          style="width: 150px; margin-left: 10px; margin-bottom: 0; height: 50px;">
+      </div>
+</body>
+
+</html>
