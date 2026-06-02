@@ -2,7 +2,7 @@
 
 ESP32 Power management unit for front-panel ports. Read this whole README for the full picture, you can't install this blindly.
 
-> ![NOTE]
+> [!NOTE]
 > If you like what you see, consider [becoming a sponsor!](https://github.com/sponsors/404oops)
 
 ## Programming the ESP32
