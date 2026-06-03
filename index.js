@@ -101,7 +101,7 @@ async function restartMonitoredServer() {
 
 function waitForHostToComeBack() {
   const checkIntervalMs = 1000;
-  console.log(`Waiting for host ${monitoredHost} to come back online...`);
+  process.stdout.write(`Waiting for host ${monitoredHost} to come back online... `);
 
   const checkHost = async () => {
     const reachable = await isHostReachable(monitoredHost);
@@ -124,8 +124,10 @@ async function watchdogTick() {
   const reachable = await isHostReachable(monitoredHost);
 
   if (!reachable) {
-    console.log(`Host ${monitoredHost} did not respond to ping; cycling power.`);
+    process.stdout.write(`Host ${monitoredHost} did not respond to ping; cycling power.`,);
     await restartMonitoredServer();
+  } else {
+    console.log(`Host ${monitoredHost} is reachable.`);
   }
 }
 
