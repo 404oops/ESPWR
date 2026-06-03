@@ -94,26 +94,29 @@ async function restartMonitoredServer() {
     await sleep(2000);
     await holdPower(200);
   } finally {
-    waitForHostToComeBack();
+    await waitForHostToComeBack();
     restartInProgress = false;
   }
 }
 
-function waitForHostToComeBack() {
+async function waitForHostToComeBack() {
   const checkIntervalMs = 1000;
   process.stdout.write(`Waiting for host ${monitoredHost} to come back online... `);
 
-  const checkHost = async () => {
-    const reachable = await isHostReachable(monitoredHost);
+  return new Promise((resolve) => {
+    const checkHost = async () => {
+      const reachable = await isHostReachable(monitoredHost);
 
-    if (reachable) {
-      console.log(`Host ${monitoredHost} is back online.`);
-    } else {
-      setTimeout(checkHost, checkIntervalMs);
-    }
-  };
+      if (reachable) {
+        console.log(`Host ${monitoredHost} is back online.`);
+        resolve();
+      } else {
+        setTimeout(checkHost, checkIntervalMs);
+      }
+    };
 
-  setTimeout(checkHost, checkIntervalMs);
+    setTimeout(checkHost, checkIntervalMs);
+  });
 }
 
 async function watchdogTick() {
