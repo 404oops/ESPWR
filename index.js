@@ -94,8 +94,8 @@ async function restartMonitoredServer() {
     await sleep(2000);
     await holdPower(200);
   } finally {
-    restartInProgress = false;
     waitForHostToComeBack();
+    restartInProgress = false;
   }
 }
 
@@ -120,11 +120,11 @@ async function watchdogTick() {
   if (restartInProgress) {
     return;
   }
-  console.log(`Pinging ${monitoredHost}...`);
+  process.stdout.write(`Pinging ${monitoredHost}... `);
   const reachable = await isHostReachable(monitoredHost);
 
   if (!reachable) {
-    process.stdout.write(`Host ${monitoredHost} did not respond to ping; cycling power.`,);
+    console.log(`Host ${monitoredHost} did not respond to ping; cycling power.`,);
     await restartMonitoredServer();
   } else {
     console.log(`Host ${monitoredHost} is reachable.`);
