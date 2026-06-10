@@ -47,12 +47,12 @@ Both of them **REQUIRE** arguments, which are:
 > [!CAUTION]
 > **Do NOT hold RST with an interval more than 200ms, even though the logic is implemented, there's genuinely no need to do that. Holding it for 200ms is enough to simulate a human press.**
 
-## Running the slave
+## Running the secondary server
 
-The slave is a server that's gonna do the dirty work. It's made with Bootstrap 2 (why not).
+The secondary server is a server that's gonna do the dirty work. It's made with Bootstrap 2 (why not).
 
 > [!IMPORTANT]
-> **I built a Watchdog into the slave.** That's the whole reason why I made the project. You have to run the program on a host that has `ping` installed, and it will check if the host is online every 15 seconds. If it's not, it will power-cycle it through the API. You can choose to disengage the watchdog.
+> **I built a Watchdog into the secondary server.** That's the whole reason why I made the project. You have to run the program on a host that has `ping` installed, and it will check if the host is online every 15 seconds. If it's not, it will power-cycle it through the API. You can choose to disengage the watchdog.
 
 > [!CAUTION]
 > **YOU HAVE TO EDIT THE `index.js` FILE.** In it are variables and all settings that you have to change and fill in with your own information to make everything work. **If you disengage the watchdog, you can keep the settings as-is, but you still have to change the IP of the ESP32.**
@@ -82,4 +82,4 @@ npm run serve
 Make sure to put this into the autostart of whichever container/machine you're running this on.
 
 > [!TIP]
-> I intended this to run on an LXC container on a server that doesn't have the issues I'm running into. YMMV. I'm not including a Dockerfile or a GitHub actions workflow to make a GitHub container that makes this all wired into a container. The point is to get something like a Raspberry Pi Zero or anything lesser than that and run the slave on **that** so that there's somewhat of a solution that doesn't hang or crash.
+> I intended this to run on an LXC container on a server that doesn't have the issues I'm running into. YMMV. I'm not including a Dockerfile or a GitHub actions workflow to make a GitHub container that makes this all wired into a container. The point is to get something like a Raspberry Pi Zero or anything lesser than that and run the secondary server on **that** so that there's somewhat of a solution that doesn't hang or crash.
